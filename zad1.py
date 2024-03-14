@@ -1,9 +1,14 @@
-list = [1, 2]
-avg = list[0] + list[1]
-mode = 0
-for i in range(2, 47):
-    list.append((list[i-1] + list[i-2]) / (list[i-2] - list[i-1]))
-    avg += list[i]
+import statistics
 
-avg /= 48
-print(avg)
+myList = [1, 2]
+sum = myList[0] + myList[1]
+for i in range(2, 48):
+    myList.append((myList[i-1] + myList[i-2]) / (myList[i-2] - myList[i-1]))
+    sum += myList[i]
+
+avg = sum / len(myList)
+# print(avg)
+
+mode = statistics.multimode(myList)
+for num in mode:
+    print(num)
