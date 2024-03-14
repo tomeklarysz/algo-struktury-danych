@@ -1,5 +1,7 @@
 import statistics
+import time
 
+stime = time.time()
 myList = [1, 2]
 sum = myList[0] + myList[1]
 for i in range(2, 48):
@@ -9,6 +11,10 @@ for i in range(2, 48):
 avg = sum / len(myList)
 # print(avg)
 
-mode = statistics.multimode(myList)
-for num in mode:
-    print(num)
+modeList = statistics.multimode(myList)
+
+if len(myList) == len(modeList):
+    print('no value appeared more than one time')
+
+print(time.time()-stime)
+# 9.584426879882812e-05
