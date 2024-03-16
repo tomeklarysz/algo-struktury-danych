@@ -1,10 +1,4 @@
-"""
-while True:
-
-
-    if  break
-
-"""
+import random
 board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
 def printBoard():
     print('    A   B   C')
@@ -23,9 +17,7 @@ def currentTurn():
             elif item == 'O':
                 countY += 1
     if countX <= countY:
-        # print('X\'s move')
         return 'X'
-    # print('O\'s move')
     return 'O'
 
 def move(row, column):
@@ -45,7 +37,10 @@ def move(row, column):
     else:
         print('Incorrect column!')
         return False
-    board[row][column] = marker
+    if board[row][column] == ' ':
+        board[row][column] = marker
+    else:
+        print('This square is already taken!')
 
 def isListEqual(list):
     if list.count(list[0]) == len(list) and list[0] != ' ':
@@ -86,18 +81,137 @@ def isTie():
 
 
 def readMove():
+    computer = isPlayingAgainstBot()
     while True:
+        if computer and currentTurn() == 'O':
+            computerMove()
+            printBoard()
+            if isGameOver():
+                print('Player (O) won')
+                break
+            if isTie():
+                print('It\'s tie!')
+                break
+            print(f'{currentTurn()}\'s move')
+            continue
         column = input('Enter a letter to choose column A-C: ')
         row = input('Enter a number to choose row 1-3: ')
         move(row, column)
         printBoard()
         if isGameOver():
-            print(f'Player ({currentTurn()}) won')
+            print('Player (X) won')
             break
         if isTie():
             print('It\'s tie!')
             break
         print(f'{currentTurn()}\'s move')
+
+def computerMove():
+    diagonalDown = []
+    diagonalUp = []
+    emptySquares = []
+    """bestOption[0] is optimal row, bestOption[1] is optimal column"""
+    bestOption = [1, 1]
+    for i in range(3):
+        vertical = []
+        if board[i].count('O') == 2 and board[i].count('X') == 0:
+            """check if any row has 2 Os and is close to winning"""
+            bestOption[0] = i
+            bestOption[1] = board[i].index(' ')
+            board[bestOption[0]][bestOption[1]] = 'O'
+            return True
+        if board[i].count('X') == 2 and board[i].count('O') == 0:
+            """check if any row has 2 Xs and is close to winning"""
+            bestOption[0] = i
+            bestOption[1] = board[i].index(' ')
+            board[bestOption[0]][bestOption[1]] = 'O'
+            return True
+        for j in range(3):
+            vertical.append(board[j][i])
+            if (i == j):
+                diagonalDown.append(board[i][j])
+            if (i + j == 2):
+                diagonalUp.append(board[i][j])
+            if board[i][j] == ' ':
+                emptySquares.append([i, j])
+        if vertical.count('O') == 2 and vertical.count('X') == 0:
+            """if any column has 2 Xs and is close to winning"""
+            bestOption[0] = vertical.index(' ')
+            bestOption[1] = i
+            board[bestOption[0]][bestOption[1]] = 'O'
+            return True
+        if vertical.count('X') == 2 and vertical.count('O') == 0:
+            """if any column has 2 Xs and is close to winning"""
+            bestOption[0] = vertical.index(' ')
+            bestOption[1] = i
+            board[bestOption[0]][bestOption[1]] = 'O'
+            return True
+    if diagonalDown.count('O') == 2 and diagonalDown.count('X') == 0:
+        if diagonalDown.index(' ') == 0:
+            bestOption[0] = 0
+            bestOption[1] = 0
+        elif diagonalDown.index(' ') == 1:
+            bestOption[0] = 1
+            bestOption[1] = 1
+        else:
+            bestOption[0] = 2
+            bestOption[1] = 2
+        board[bestOption[0]][bestOption[1]] = 'O'
+        return True
+    if diagonalDown.count('X') == 2 and diagonalDown.count('O') == 0:
+        if diagonalDown.index(' ') == 0:
+            bestOption[0] = 0
+            bestOption[1] = 0
+        elif diagonalDown.index(' ') == 1:
+            bestOption[0] = 1
+            bestOption[1] = 1
+        else:
+            bestOption[0] = 2
+            bestOption[1] = 2
+        board[bestOption[0]][bestOption[1]] = 'O'
+        return True
+    if diagonalUp.count('O') == 2 and diagonalUp.count('X') == 0:
+        if diagonalUp.index(' ') == 0:
+            bestOption[0] = 0
+            bestOption[1] = 2
+        elif diagonalDown.index(' ') == 1:
+            bestOption[0] = 1
+            bestOption[1] = 1
+        else:
+            bestOption[0] = 2
+            bestOption[1] = 0
+        board[bestOption[0]][bestOption[1]] = 'O'
+        return True
+    if diagonalUp.count('X') == 2 and diagonalUp.count('O') == 0:
+        if diagonalUp.index(' ') == 0:
+            bestOption[0] = 0
+            bestOption[1] = 2
+        elif diagonalDown.index(' ') == 1:
+            bestOption[0] = 1
+            bestOption[1] = 1
+        else:
+            bestOption[0] = 2
+            bestOption[1] = 0
+        board[bestOption[0]][bestOption[1]] = 'O'
+        return True
+    if board[1][1] == ' ':
+        board[1][1] = 'O'
+        return False
+    # pick random in case of no optimal
+    draw = random.choice(emptySquares)
+    board[draw[0]][draw[1]] = 'O'
+    return False
+    
+def isPlayingAgainstBot():
+    question = input('Do you want to play against computer? Y/N ')
+    if question.upper() == 'Y':
+        print('Playing against computer')
+        return True
+    elif question.upper() == 'N':
+        print('Playing 2-player mode')
+        return False
+    print('Incorrect input')
+    return isPlayingAgainstBot()
 
 print(f'{currentTurn()}\'s move')
 printBoard()
