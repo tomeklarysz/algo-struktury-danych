@@ -19,4 +19,3 @@ if len(myArray) == len(modeList):
     print('no value appeared more than one time')
 
 print(time.time()-stime)
-# 9.870529174804688e-05

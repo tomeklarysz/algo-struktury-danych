@@ -17,4 +17,3 @@ if len(myList) == len(modeList):
     print('no value appeared more than one time')
 
 print(time.time()-stime)
-# 9.584426879882812e-05
