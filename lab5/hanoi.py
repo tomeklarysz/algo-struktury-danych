@@ -1,3 +1,5 @@
+import time
+
 counter = 0
 def Hanoi(n, source, destination, buff):
     global counter
@@ -11,8 +13,7 @@ def Hanoi(n, source, destination, buff):
 
 def iterative(n, source, destination, buff):
     global counter
-    counter = 0
-    while len(source) != 0 or len(buff) != 0:
+    while len(buff) != n and len(destination) != n:
         counter += 1
         if counter%3 == 1:
             if len(destination) == 0:
@@ -41,16 +42,26 @@ def iterative(n, source, destination, buff):
                 destination.append(buff.pop())
             else:
                 buff.append(destination.pop())
-        print(f'source: {source}, buff: {buff}, destination: {destination}')
+        # print(f'source: {source}, buff: {buff}, destination: {destination}')
     return
 
-# a = [6, 5, 4, 3, 2, 1]
-a = [4, 3, 2, 1]
+a = []
+for i in range(1000):
+    a.append(i+1)
+a.reverse()
 b = []
 c = []
 
+n = len(a)
+
 print(f'START: source: {a}, buff: {b}, destination: {c}')
-Hanoi(4, a, b, c)
-# iterative(5, a, b, c)
-print(counter)
+stime = time.time()
+Hanoi(n, a, b, c)
+# iterative(n, a, b, c)
+etime = time.time()
+print(stime)
+print(etime)
+print(f'recursive time for n = {n}: {etime - stime}')
+# print(f'iterative time for n = {n}: {etime - stime}')
+print(f'number of steps: {counter}')
 print(f'END: source: {a}, buff: {b}, destination: {c}')
