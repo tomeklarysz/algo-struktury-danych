@@ -1,74 +1,80 @@
 root = [1.5, 3.5, 4.5, 7.5, 9.5]
 
+class TreeArray:
+    def __init__(self, length):
+        self.length = length
+        array = []
+        for i in range(1, length, 1):
+            array.append(Node(i-0.5))
+        self.array = array
+    
+    def printTreeArray(self):
+        for node in self.array:
+            # if node.left is not None or node.right is not None:
+                # node.printTree()
+            node.printTree()
+    
+    def insert(self, x):
+        if x < self.array[0].value:
+            self.array[0].insert(x)
+            return
+        if x > self.array[-1].value:
+            self.array.append(x)
+            return
+        for i in range(len(self.array)):
+            if x > self.array[i].value and x < self.array[i+1].value:
+                if x - self.array[i].value > 0.5:
+                    self.array[i+1].insert(x)
+                    return
+                self.array[i].insert(x)
+                return
+                           
+
 class Node:
-    def __init__(self, root, value):
-        self.root = root
+    def __init__(self, value):
         self.value = value
         self.left = None
         self.right = None
-
-nodes = []
-for item in root:
-    nodes.append(Node(root, item))
-
-nodes[0].left = 1.3
-nodes[0].right = 1.6
-
-nodes[1].right = 3.7
-
-nodes[2].left = 4.0
-nodes[2].right = 4.99
-
-nodes[3].left = 7.3
-nodes[3].right = Node(root, 7.8)
-nodes[3].right.left = Node(root, 7.7)
-nodes[3].right.right = 7.9
-nodes[3].right.left.left = 7.6
-
-nodes[4].left = 9.3
-
-# def printNodes(node, level):
-    # if isinstance(node, float):
-        # print(node)
-    # else:
-        # print(node.value, end='')
-        # if node.left:
-            # print("-"*level, end='')
-            # if not node.right:
-                # printNodes(node.left, level+1)
-            # else:
-                # print(node.left)
-                # print("   "*level, end='')
-                # if isinstance(node.right, float):
-                    # print(f'{"-"*level}{node.right}')
-                # else:
-                    # print("-"*level, end='')
-                    # printNodes(node.right, level+1)
-        # elif node.right:
-            # print("-"*level, end='')
-            # printNodes(node.right, level+1)
-        # else:
-            # print(node.value)
-
-def printNodes(node, level):
-    if node is None:
-        # print()
-        return
-    elif not isinstance(node, float):
-        print(node.value, end='')
-        print('-'*level, end='')
-        printNodes(node.left, level+1)
-        print('   '*level, end='')
-        print('-'*level, end='')
-        printNodes(node.right, level+1)
-    else:
-        print(node)
+    
+    def printTree(self, level=0, isRight=False):
+        if isRight:
+            print('    ', ' ' * 5 * (level-1), end='')
+        print('-'*level, self.value, end='')
+        print(' ', end='')
+        if self.left:
+            self.left.printTree(level+1)
+        if self.right:
+            self.right.printTree(level+1, isRight=self.left is not None)
+        if (not self.left) and (not self.right):
+            print()
+    
+    def insert(self, x):
+        if not self.value:
+            self.value = x
+            return
+        if self.value == x:
+            return
+        if x < self.value:
+            if self.left:
+                self.left.insert(x)
+                return
+            self.left = Node(x)
+            return
+        if self.right:
+            self.right.insert(x)
+            return
+        self.right = Node(x)
 
 
+arr = TreeArray(10)
+arr.insert(0.6)
+arr.insert(3.2)
+arr.insert(2.7)
+arr.insert(2.8)
+arr.insert(1.2)
+arr.insert(2.6)
+arr.insert(3.7)
+arr.insert(3.3)
+arr.insert(3.1)
 
-def printTree(tree):
-    level = 1
-    for node in tree:
-        printNodes(node, level)
-
-printTree(nodes)
+arr.printTreeArray()
