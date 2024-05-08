@@ -1,5 +1,4 @@
-root = [1.5, 3.5, 4.5, 7.5, 9.5]
-
+import math
 class TreeArray:
     def __init__(self, length):
         self.length = length
@@ -28,7 +27,15 @@ class TreeArray:
                     return
                 self.array[i].insert(x)
                 return
-                           
+
+    def minimum(self, y):
+        return self.array[y].minimum()
+    
+    def maximum(self, y):
+        return self.array[y].maximum()
+    
+    def search(self, x):
+        return self.array[math.floor(x)].search(x)
 
 class Node:
     def __init__(self, value):
@@ -64,6 +71,29 @@ class Node:
             self.right.insert(x)
             return
         self.right = Node(x)
+    
+    def minimum(self):
+        temp = self
+        while temp.left:
+            temp = temp.left
+        return temp.value
+    
+    def maximum(self):
+        temp = self
+        while temp.right:
+            temp = temp.right
+        return temp.value
+    
+    def search(self, x):
+        if self.value == x:
+            return True
+        if x < self.value:
+            if self.left:
+                return self.left.search(x)
+            return False
+        if self.right:
+            return self.right.search(x)
+        return False
 
 
 arr = TreeArray(10)
@@ -78,3 +108,8 @@ arr.insert(3.3)
 arr.insert(3.1)
 
 arr.printTreeArray()
+print(f'minimum korzenia 2: {arr.minimum(2)}')
+print(f'minimum korzenia 3: {arr.minimum(3)}')
+print(f'maximum korzenia 3: {arr.maximum(3)}')
+print(f'is 3.1 in tree?: {arr.search(3.1)}')
+print(f'is 1.4 in tree?: {arr.search(1.4)}')
