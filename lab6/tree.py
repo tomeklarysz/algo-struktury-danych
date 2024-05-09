@@ -1,4 +1,6 @@
 import math
+import time
+import random
 class TreeArray:
     def __init__(self, length):
         self.length = length
@@ -18,7 +20,7 @@ class TreeArray:
             self.array[0].insert(x)
             return
         if x > self.array[-1].value:
-            self.array.append(x)
+            self.array[-1].insert(x)
             return
         for i in range(len(self.array)):
             if x > self.array[i].value and x < self.array[i+1].value:
@@ -95,21 +97,20 @@ class Node:
             return self.right.search(x)
         return False
 
-
-arr = TreeArray(10)
-arr.insert(0.6)
-arr.insert(3.2)
-arr.insert(2.7)
-arr.insert(2.8)
-arr.insert(1.2)
-arr.insert(2.6)
-arr.insert(3.7)
-arr.insert(3.3)
-arr.insert(3.1)
-
-arr.printTreeArray()
-print(f'minimum korzenia 2: {arr.minimum(2)}')
-print(f'minimum korzenia 3: {arr.minimum(3)}')
-print(f'maximum korzenia 3: {arr.maximum(3)}')
-print(f'is 3.1 in tree?: {arr.search(3.1)}')
-print(f'is 1.4 in tree?: {arr.search(1.4)}')
+arr = TreeArray(11)
+# arr.printTreeArray()
+sum = 0
+number = 100000
+for i in range(number):
+    stime = time.time()
+    arr.insert(random.uniform(0, 10))
+    sum += time.time() - stime
+print(sum / number)
+# print(time.time())
+# arr.maximum(3)
+# print(time.time())
+# arr.minimum(3)
+# print(time.time())
+# print('search:')
+# arr.search(random.uniform(0, 10))
+# print(time.time())
