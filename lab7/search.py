@@ -1,4 +1,11 @@
-f = open(r'lab7\patterns\1000_pattern.txt')
+import time
+
+# f = open(r'lab7\patterns\1000_pattern.txt')
+# f = open(r'lab7\patterns\2000_pattern.txt')
+# f = open(r'lab7\patterns\3000_pattern.txt')
+# f = open(r'lab7\patterns\4000_pattern.txt')
+f = open(r'lab7\patterns\5000_pattern.txt')
+# f = open(r'lab7\patterns\8000_pattern.txt')
 
 lines = f.readlines()
 pattern = 'ABC'
@@ -54,13 +61,10 @@ def rabin(array, p, q):
             cur %= q
     return result
 
-
+stime = time.time()
 # result = naive(lines, pattern)
+result = rabin(lines, pattern, 16)
+print(time.time() - stime)
 
 # print(result)
 # print(len(result))
-
-result = rabin(lines, pattern, 16)
-
-print(result)
-print(len(result))
