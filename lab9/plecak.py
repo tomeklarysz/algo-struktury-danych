@@ -1,3 +1,7 @@
+import random
+import math
+import time
+
 file = open(r'lab9/packages/packages20.txt')
 # file = open(r'lab9/packages/packages100.txt')
 # file = open(r'lab9/packages/packages500.txt')
@@ -64,5 +68,43 @@ def alg_ratio(data, size):
     return [width, height, value]
 
 
-print(greedy(dane, 20)) # 39
+def simulate(data, size):
+    init_temp = 10000.0
+    change = 0.95
+    final_temp = 0.1
+    current_temp = init_temp
+    best_width = 0
+    best_height = 0
+    old_value = 0
+    while current_temp > final_temp:
+        books = list(data)
+        width = 0
+        height = 0
+        value = 0
+        while width <= size and height <= size:
+            element = random.choice(books)
+            if width + int(element[0]) <= size and height + int(element[1]) <= size:
+                width += int(element[0])
+                height += int(element[1])
+                value += int(element[2])
+                books.remove(element)
+                # print([width, height, value])
+            else:
+                break
+        value_diff = old_value - value
+        p = math.e ** (( - value - old_value) / current_temp)
+        if (value_diff < 0
+            or random.uniform(0, 1) < p):
+            best_width = width
+            best_height = height
+            old_value = value
+        # if i > 0:
+            # print(p)
+        current_temp *= change
+        # print([best_width, best_height, best_value])
+    return [best_width, best_height, old_value]
+
+
+# print(greedy(dane, 20)) # 39
 # print(alg_ratio(dane, 20)) # 49
+print(simulate(dane, 20))
