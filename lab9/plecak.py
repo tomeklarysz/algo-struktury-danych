@@ -2,9 +2,10 @@ import random
 import math
 import time
 
-file = open(r'lab9/packages/packages20.txt')
+# file = open(r'lab9/packages/packages20.txt')
 # file = open(r'lab9/packages/packages100.txt')
 # file = open(r'lab9/packages/packages500.txt')
+file = open(r'lab9/packages/packages1000.txt')
 
 dane = []
 for l in file:
@@ -105,6 +106,11 @@ def simulate(data, size):
     return [best_width, best_height, old_value]
 
 
-# print(greedy(dane, 20)) # 39
-# print(alg_ratio(dane, 20)) # 49
-print(simulate(dane, 20))
+stime = time.time()
+# print(stime)
+# result = greedy(dane, 1000)
+# result = alg_ratio(dane, 1000)
+result = simulate(dane, 1000)
+# print(time.time())
+print(time.time() - stime)
+print(f'result: {result}')
